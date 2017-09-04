@@ -13,21 +13,27 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package socks5.handler;
+package socks5.local.handler;
 
+import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.util.ReferenceCountUtil;
+import socks5.encryption.CryptFactory;
+import socks5.encryption.ICrypt;
 
 public final class RelayHandler extends ChannelInboundHandlerAdapter {
 
     private final Channel relayChannel;
     private boolean dirty = false;
+    private boolean browser;//true为浏览器、false为远程服务器
+    private ICrypt iCrypt = CryptFactory.get("aes-256-cfb", "362412642");
 
-    public RelayHandler(Channel relayChannel) {
+    public RelayHandler(Channel relayChannel, boolean browser) {
         this.relayChannel = relayChannel;
+        this.browser = browser;
     }
 
     @Override
@@ -38,6 +44,11 @@ public final class RelayHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
         if (relayChannel.isActive()) {
+            if(browser){
+                msg = iCrypt.encrypt((ByteBuf) msg);
+            }else {
+                msg = iCrypt.decrypt((ByteBuf) msg);
+            }
             relayChannel.write(msg);
             dirty = true;
         } else {

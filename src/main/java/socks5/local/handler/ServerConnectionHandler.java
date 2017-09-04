@@ -1,4 +1,4 @@
-package socks5.handler;
+package socks5.local.handler;
 
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
@@ -38,16 +38,12 @@ public class ServerConnectionHandler extends ChannelInboundHandlerAdapter {
             outboundChannel.pipeline().remove(Socks5CommandResponseDecoder.class);
 //            outboundChannel.pipeline().addLast(new Show());
             outboundChannel.pipeline().addLast(new JdkZlibDecoder());
-            outboundChannel.pipeline().addLast(new RelayHandler(browserChannel));
+            outboundChannel.pipeline().addLast(new RelayHandler(browserChannel, false));
             browserChannel.pipeline().remove(Socks5CommandRequestDecoder.class);
             browserChannel.pipeline().remove(BrowserConnectionHandler.class);
-//            browserChannel.pipeline().addLast(new JdkZlibDecoder());
-            browserChannel.pipeline().addLast(new RelayHandler(outboundChannel));
+            browserChannel.pipeline().addLast(new RelayHandler(outboundChannel, true));
             browserChannel.writeAndFlush(new DefaultSocks5CommandResponse(Socks5CommandStatus.SUCCESS, request.dstAddrType(), request.dstAddr(), request.dstPort()))
-                    .addListener(channelFuture ->
-                    {
-                        browserChannel.pipeline().remove(Socks5ServerEncoder.class);
-                    });
+                    .addListener(channelFuture -> browserChannel.pipeline().remove(Socks5ServerEncoder.class));
         }
     }
 

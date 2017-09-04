@@ -1,4 +1,4 @@
-package socks5.boot;
+package socks5.local.boot;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
@@ -8,7 +8,7 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Component;
-import socks5.handler.ClientChannelFactory;
+import socks5.local.handler.ClientChannelFactory;
 
 /**
  * Created by earayu on 2017/8/29.

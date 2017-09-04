@@ -1,4 +1,4 @@
-package socks5.handler;
+package socks5.local.handler;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelHandlerContext;
@@ -8,7 +8,7 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.socksx.v5.DefaultSocks5CommandResponse;
 import io.netty.handler.codec.socksx.v5.Socks5CommandRequest;
 import io.netty.handler.codec.socksx.v5.Socks5CommandStatus;
-import socks5.boot.LocalServerConfig;
+import socks5.local.boot.LocalServerConfig;
 
 /**
  * Created by earayu on 2017/8/30.

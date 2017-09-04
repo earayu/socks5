@@ -1,4 +1,4 @@
-package socks5.handler;
+package socks5.local.handler;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;

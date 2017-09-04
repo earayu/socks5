@@ -1,4 +1,4 @@
-package socks5.boot;
+package socks5.local.boot;
 
 import org.springframework.beans.BeansException;
 import org.springframework.boot.SpringApplication;
